@@ -1,0 +1,10 @@
+{
+  "name": "socket.io-router",
+  "classPath": "src",
+  "dependencies": {
+    "hxnodejs": "",
+    "js-kit": "",
+    "tink_macro": "",
+    "tink_validation": ""
+  }
+}
