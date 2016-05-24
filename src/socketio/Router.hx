@@ -27,7 +27,7 @@ class Router {
 								var eventName = v.getString().sure();
 								switch events.indexOf(eventName) {
 									case -1:
-										events.push(meta.name);
+										events.push(eventName);
 										var argsWithoutSocket = args.filter(function(arg) return arg.name != 'socket');
 										var handler = EFunction(null, {
 											args: [for(arg in argsWithoutSocket) {name: arg.name, type: null}],
