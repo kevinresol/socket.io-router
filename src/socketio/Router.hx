@@ -28,21 +28,22 @@ class Router {
 								switch events.indexOf(eventName) {
 									case -1:
 										events.push(eventName);
-										var argsWithoutSocket = args.filter(function(arg) return arg.name != 'socket');
+										var argsWithoutSocket = args.filter(function(arg) return arg.name != 'socket' && arg.name != 'callback');
 										var handler = EFunction(null, {
-											args: [for(arg in argsWithoutSocket) {name: arg.name, type: null}],
+											args: [for(arg in argsWithoutSocket) {name: arg.name, type: null}].concat([{name: 'callback', type: macro:Dynamic->Void}]),
 											ret: macro:Void,
 											expr: macro {
-												try
+												try {
 													$b{argsWithoutSocket.map(function(arg) {
 														var ct = arg.t.toComplex();
 														return macro tink.Validation.validate(($i{arg.name}:$ct));
 													})}
+													routes.$name($a{args.map(function(arg) return macro $i{arg.name})});
+												}
 												catch(e:Dynamic) {
-													socket.emit('error', e);
+													socket.emit('validation error', e);
 													return;
 												}
-												routes.$name($a{args.map(function(arg) return macro $i{arg.name})});
 											}
 										}).at();
 										exprs.push((macro socket.on($v{eventName}, $handler)));
